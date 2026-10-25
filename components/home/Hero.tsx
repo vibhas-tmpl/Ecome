@@ -1,3 +1,4 @@
+"use client"
 import GoAround from "@/components/home/GoAround";
 import Image from "next/image";
 
@@ -18,8 +19,15 @@ export default function Hero() {
               to your sense of style.
             </p>
 
-            <button className="h-14 w-full rounded-full bg-black px-10 text-white sm:w-fit">
-              Shop Now
+            <button
+                onClick={() =>
+                    document.getElementById("new-arrivals")?.scrollIntoView({
+                    behavior: "smooth",
+                    })
+                }
+                className="h-14 w-full rounded-full bg-black px-10 text-white sm:w-fit"
+                >
+                Shop Now
             </button>
 
             {/* Statistics */}

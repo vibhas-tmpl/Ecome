@@ -1,5 +1,6 @@
 
 import Image from "next/image";
+import Link from "next/link";
 
 const products = [
   {
@@ -36,97 +37,116 @@ const products = [
 
 export default function TopSelling() {
   return (
-    <section className="w-full py-12 sm:py-21 ">
-        <div className="global-container">
-      {/* Section heading */}
-      <div className="mb-12">
-        <h1 className="text-center font-heading text-4xl font-bold sm:text-6xl">
-          TOP SELLING
-        </h1>
-      </div>
+    <section className="w-full py-12 sm:py-21">
+      <div className="global-container">
+        {/* Section heading */}
+        <div className="mb-12">
+          <h1 className="text-center font-heading text-4xl font-bold sm:text-6xl">
+            TOP SELLING
+          </h1>
+        </div>
 
-      {/* Product cards */}
-      <div className=" grid grid-cols-2 gap-4 sm:mt-10 sm:gap-6 lg:grid-cols-4 ">
-        {products.map((product) => (
-          <div key={product.id} className="min-w-0">
-            {/* Product image */}
-            <div className="relative aspect-3/3 overflow-hidden rounded-3xl bg-gray-100">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                sizes="(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 25vw"
-                className="object-cover"
-              />
-            </div>
+        {/* Product cards */}
+        <div
+          className="
+            flex gap-4 overflow-x-auto scroll-smooth pb-4
+            snap-x snap-mandatory
+            sm:mt-10 sm:grid sm:grid-cols-2 sm:gap-6
+            sm:overflow-visible sm:pb-0
+            lg:grid-cols-4
+          "
+        >
+          {products.map((product) => (
+            <Link
+              key={product.id}
+              href={`/shop/casual/product/${product.id}`}
+              className="
+                block w-[70%] shrink-0 snap-start min-w-0
+                sm:w-auto sm:shrink
+              "
+            >
+              {/* Product image */}
+              <div className="relative aspect-square overflow-hidden rounded-3xl bg-gray-100">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 639px) 70vw, (max-width: 1023px) 45vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
 
-            {/* Product name */}
-            <p className="mt-4 truncate font-satoshi font-bold text-[20px] ">
-              {product.name}
-            </p>
+              {/* Product name */}
+              <p className="mt-4 truncate font-satoshi text-[20px] font-bold">
+                {product.name}
+              </p>
 
-            {/* Star rating */}
-            <div className="mt-1 flex items-center gap-2">
+              {/* Star rating */}
+              <div className="mt-1 flex items-center gap-2">
                 <div
-                    className="flex text-3xl leading-none tracking-tight text-yellow-500"
-                    aria-label={`${product.rating} out of 5 stars`}
+                  className="flex text-3xl leading-none tracking-tight text-yellow-500"
+                  aria-label={`${product.rating} out of 5 stars`}
                 >
-                    {Array.from({ length: 5 }, (_, index) => {
+                  {Array.from({ length: 5 }, (_, index) => {
                     const fill =
-                        product.rating >= index + 1
+                      product.rating >= index + 1
                         ? "★"
                         : product.rating >= index + 0.5
-                            ? "⯪"
-                            : "☆";
+                          ? "⯪"
+                          : "☆";
 
                     return <span key={index}>{fill}</span>;
-                    })}
+                  })}
                 </div>
-                <div className="flex justify-between items-center">
-                    <span className="flex shrink-0 text-sm leading-none text-gray-600">
-                    {product.rating}/5
-                    </span>
-                </div>
-            </div>
 
-            {/* Price */}
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-            {/* Discounted price — show only when discount exists */}
-            {product.discount && (
-                <span className="text-lg font-bold text-black sm:text-2xl">
-                ${Math.round(product.price * (1 - product.discount / 100))}
+                <p className=" text-gray-600">
+                  {product.rating}/5
+                </p>
+              </div>
+
+              {/* Price */}
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                {/* Discounted price */}
+                {product.discount && (
+                  <span className="text-lg font-bold text-black sm:text-2xl">
+                    $
+                    {Math.round(
+                      product.price * (1 - product.discount / 100)
+                    )}
+                  </span>
+                )}
+
+                {/* Original price */}
+                <span
+                  className={`text-lg font-bold sm:text-2xl ${
+                    product.discount
+                      ? "text-gray-400 line-through"
+                      : "text-black"
+                  }`}
+                >
+                  ${product.price}
                 </span>
-            )}
 
-            {/* Original price */}
-            <span
-                className={`text-lg font-bold sm:text-2xl ${
-                product.discount ? "text-gray-400 line-through" : "text-black"
-                }`}
-            >
-                ${product.price}
-            </span>
+                {/* Discount percentage */}
+                {product.discount && (
+                  <span className="rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-500">
+                    -{product.discount}%
+                  </span>
+                )}
+              </div>
+            </Link>
+          ))}
+        </div>
 
-            {/* Discount percentage */}
-            {product.discount && (
-                <span className="rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-500">
-                -{product.discount}%
-                </span>
-            )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* View All button */}
-      <div className=" mt-8 flex justify-center sm:mt-10">
-        <button
-          type="button"
-          className="w-full rounded-full border font-satoshi border-black/10 px-20 py-3 text-sm font-bold transition hover:bg-black hover:text-white sm:w-auto"
-        >
-          View All
-        </button>
-      </div>
+        {/* View All button */}
+        <div className="mt-8 flex justify-center sm:mt-10">
+          <button
+            type="button"
+            className="w-full rounded-full border border-black/10 px-20 py-3 font-satoshi text-sm font-bold transition hover:bg-black hover:text-white sm:w-auto"
+          >
+            View All
+          </button>
+        </div>
       </div>
     </section>
   );

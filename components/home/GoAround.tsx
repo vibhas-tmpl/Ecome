@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 
 const logos = [
@@ -28,6 +29,7 @@ export default function GoAround() {
                   alt={set === 0 ? logo.alt : ""}
                   width={160}
                   height={60}
+                  priority
                   className="h-auto max-h-10 w-full object-contain"
                 />
               </div>

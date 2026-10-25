@@ -235,8 +235,21 @@ h6,
   will-change: transform;
 }
 
+
+.logo-track {
+  display: flex;
+  width: max-content;
+  animation: logo-scroll 20s linear infinite;
+  will-change: transform;
+}
+
 .logo-group {
   flex-shrink: 0;
+}
+
+/* Pause when the user hovers over the logos */
+.logo-track:hover {
+  animation-play-state: paused;
 }
 
 @keyframes logo-scroll {
@@ -248,6 +261,9 @@ h6,
     transform: translateX(-50%);
   }
 }
+
+
+
 
 .dark {
 

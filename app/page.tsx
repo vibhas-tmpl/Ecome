@@ -3,6 +3,9 @@ import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import NewArrival from "@/components/products/NewArrival";
 import TopSelling from "@/components/products/TopSelling";
+import DressStyle from "@/components/products/DressStyle";
+import CustomerReviewHome from "@/components/products/CustomerReviewHome";
+import Footer from "@/components/layout/Footer";
 
 
 export default function Home() {
@@ -13,7 +16,9 @@ export default function Home() {
       <Hero />
       <NewArrival />
       <TopSelling />
-      
+      <DressStyle />
+      <CustomerReviewHome />
+      <Footer />
     </div>
   );
 }
