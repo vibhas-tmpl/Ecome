@@ -6,6 +6,8 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import ReduxProvider from "./Provider";
 
+
+
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -63,7 +65,11 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-screen flex flex-col">
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+           
+                {children}
+                
+                 </ReduxProvider>
       </body>
     </html>
   );

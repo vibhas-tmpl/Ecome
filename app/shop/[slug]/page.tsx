@@ -4,13 +4,11 @@ import { Suspense } from "react";
 import { fetchProducts } from "@/lib/api";
 import type { TypeProduct } from "@/types/TypeProduct";
 
-import AnouncmentBar from "@/components/layout/AnouncmentBar";
-import Navbar from "@/components/layout/Navbar";
 import Breadcrumb from "@/components/products/category/Breadcrumb";
 import PriceFilter from "@/components/products/category/PriceFilter";
 import ProductCard from "@/components/products/category/SlugProductCard";
 import SlugPagination from "@/components/products/category/SlugPagination";
-import Footer from "@/components/layout/Footer";
+import MainLayout from "@/components/layout/MainLayout";
 
 type Props = {
   params: Promise<{
@@ -74,8 +72,7 @@ async function CategoryContent({ params, searchParams }: Props) {
 
   return (
     <main>
-      <AnouncmentBar />
-      <Navbar />
+<MainLayout>
 
       <div className="global-container mb-50 border-t border-black/10">
         <Breadcrumb
@@ -124,8 +121,7 @@ async function CategoryContent({ params, searchParams }: Props) {
           </section>
         </div>
       </div>
-
-      <Footer />
+</MainLayout>
     </main>
   );
 }
