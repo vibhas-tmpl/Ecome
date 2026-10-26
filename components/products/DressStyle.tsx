@@ -1,3 +1,4 @@
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,10 +11,30 @@ type Category = {
 };
 
 const categories: Category[] = [
-  { id: 1, category: "Casual", slug: "casual", image: "/Casual.png" },
-  { id: 2, category: "Formal", slug: "formal", image: "/Formal.png" },
-  { id: 3, category: "Party", slug: "party", image: "/Formal.png" },
-  { id: 4, category: "Gym", slug: "gym", image: "/Casual.png" },
+  {
+    id: 1,
+    category: "Electronics",
+    slug: "electronics",
+    image: "/Casual.png",
+  },
+  {
+    id: 2,
+    category: "Jewelery",
+    slug: "jewelery",
+    image: "/Formal.png",
+  },
+  {
+    id: 3,
+    category: "Men's Clothing",
+    slug: "mens-clothing",
+    image: "/Formal.png",
+  },
+  {
+    id: 4,
+    category: "Women's Clothing",
+    slug: "womens-clothing",
+    image: "/Casual.png",
+  },
 ];
 
 export default function DressStyle() {
@@ -23,7 +44,7 @@ export default function DressStyle() {
         <div className="mx-4 py-10 sm:mx-8 sm:py-16 lg:mx-18 lg:py-20">
           <div className="mb-10 sm:mb-15.5">
             <h1 className="text-center font-heading text-3xl font-bold sm:text-6xl">
-              BROWSE BY DRESS STYLE
+              BROWSE BY CATEGORY
             </h1>
           </div>
 

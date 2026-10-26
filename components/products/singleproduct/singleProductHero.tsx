@@ -3,12 +3,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { products } from "@/data/products";
-
-type Product = (typeof products)[number];
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/lib/store";
+import { addToCart } from "@/lib/cartSlice";
+import type { TypeProduct } from "@/types/TypeProduct";
 
 type SingleProductHeroProps = {
-  product: Product;
+  product: TypeProduct;
   slug: string;
 };
 
@@ -22,13 +23,13 @@ const sizes = ["Small", "Medium", "Large", "X-Large"] as const;
 
 export default function SingleProductHero({
   product,
-  slug,
 }: SingleProductHeroProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [selectedImage, setSelectedImage] = useState(product.image);
   const [selectedColor, setSelectedColor] = useState(colors[0].name);
-  const [selectedSize, setSelectedSize] = useState<
-    (typeof sizes)[number] | null
-  >(null);
+  const [selectedSize, setSelectedSize] =
+    useState<(typeof sizes)[number] | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
 
@@ -38,16 +39,27 @@ export default function SingleProductHero({
       return;
     }
 
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.title,
+        price: product.price,
+        image: product.image,
+        size: selectedSize,
+        quantity,
+      })
+    );
+
     setMessage(
-      `${product.name} (${selectedSize}, ${selectedColor}) × ${quantity} added!`
+      `${product.title} (${selectedSize}, ${selectedColor}) × ${quantity} added!`
     );
   }
 
   return (
-    <div className="global-container">
-      <section className="grid grid-cols-1 gap-8  md:grid-cols-2 md:gap-10">
+    <section className="global-container py-6">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10">
         {/* Product Gallery */}
-        <div className="grid grid-cols-1 items-stretch gap-3 sm:grid-cols-[163px_1fr]">
+        <div className="grid grid-cols-[minmax(0,1fr)] items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
           {/* Thumbnails */}
           <div className="order-2 flex gap-3 sm:order-1 sm:flex-col">
             {[product.image, product.image, product.image].map(
@@ -65,7 +77,7 @@ export default function SingleProductHero({
                 >
                   <Image
                     src={image}
-                    alt={`${product.name} thumbnail ${index + 1}`}
+                    alt={`${product.title} thumbnail ${index + 1}`}
                     fill
                     sizes="163px"
                     className="object-contain p-2"
@@ -76,10 +88,10 @@ export default function SingleProductHero({
           </div>
 
           {/* Main Image */}
-          <div className="relative order-1 min-h-[450px] overflow-hidden rounded-2xl bg-[#F0EEED] sm:order-2 sm:min-h-0">
+          <div className="relative order-1 min-h-[450px] overflow-hidden rounded-2xl bg-[#F0EEED] sm:order-2">
             <Image
               src={selectedImage}
-              alt={product.name}
+              alt={product.title}
               fill
               priority
               sizes="(max-width: 639px) 100vw, (max-width: 1023px) 60vw, 40vw"
@@ -91,59 +103,37 @@ export default function SingleProductHero({
         {/* Product Information */}
         <div className="flex flex-col gap-4">
           <h1 className="text-3xl font-extrabold uppercase md:text-5xl">
-            {product.name}
+            {product.title}
           </h1>
 
           {/* Star Rating */}
           <div className="flex items-center gap-2">
             <div
-              className="flex items-center text-3xl leading-none tracking-tight text-yellow-500"
-              aria-label={`${product.rating} out of 5 stars`}
+              className="flex text-3xl leading-none tracking-tight text-yellow-500"
+              aria-label={`${product.rating.rate} out of 5 stars`}
             >
               {Array.from({ length: 5 }, (_, index) => {
-                const fill =
-                  product.rating >= index + 1
+                const star =
+                  product.rating.rate >= index + 1
                     ? "★"
-                    : product.rating >= index + 0.5
+                    : product.rating.rate >= index + 0.5
                       ? "⯪"
                       : "☆";
 
-                return (
-                  <span key={index} className="block leading-none">
-                    {fill}
-                  </span>
-                );
+                return <span key={index}>{star}</span>;
               })}
             </div>
 
             <span className="text-sm text-gray-600">
-              {product.rating}/5
+              {product.rating.rate}/5 ({product.rating.count} reviews)
             </span>
           </div>
 
           {/* Price */}
           <div className="flex flex-wrap items-center gap-3">
-            {product.discount !== undefined && (
-              <span className="text-3xl font-bold">
-                ${Math.round(product.price * (1 - product.discount / 100))}
-              </span>
-            )}
-
-            <span
-              className={`text-3xl font-bold ${
-                product.discount !== undefined
-                  ? "text-gray-400 line-through"
-                  : "text-black"
-              }`}
-            >
-              ${product.price}
+            <span className="text-3xl font-bold">
+              ${product.price.toFixed(2)}
             </span>
-
-            {product.discount !== undefined && (
-              <span className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-600">
-                -{product.discount}%
-              </span>
-            )}
           </div>
 
           {/* Product Description */}
@@ -151,9 +141,16 @@ export default function SingleProductHero({
             {product.description}
           </p>
 
-          {/* Select Color */}
+          {/* Product Category */}
+          <p className="text-sm capitalize text-gray-500">
+            Category: {product.category}
+          </p>
+
+          {/* Color Selection */}
           <div className="border-b border-black/10 pb-5">
-            <p className="mb-4 text-base text-gray-600">Select Color</p>
+            <p className="mb-4 text-base text-gray-600">
+              Select Color
+            </p>
 
             <div className="flex items-center gap-3">
               {colors.map((color) => (
@@ -182,9 +179,11 @@ export default function SingleProductHero({
             </div>
           </div>
 
-          {/* Choose Size */}
+          {/* Size Selection */}
           <div className="border-b border-black/10 pb-5">
-            <p className="mb-4 text-base text-gray-600">Choose Size</p>
+            <p className="mb-4 text-base text-gray-600">
+              Choose Size
+            </p>
 
             <div className="flex flex-wrap gap-2">
               {sizes.map((size) => (
@@ -196,7 +195,7 @@ export default function SingleProductHero({
                     setMessage("");
                   }}
                   aria-pressed={selectedSize === size}
-                  className={`rounded-full px-5 py-3 text-sm text-gray-600 transition ${
+                  className={`rounded-full px-5 py-3 text-sm transition ${
                     selectedSize === size
                       ? "bg-black text-white"
                       : "bg-[#F0F0F0] text-black hover:bg-gray-200"
@@ -214,13 +213,15 @@ export default function SingleProductHero({
               {/* Quantity Counter */}
               <div className="flex h-15 w-[30%] items-center justify-between rounded-full bg-[#F0F0F0] px-4">
                 <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={quantity === 1}
-                    aria-label="Decrease quantity"
-                    className="text-2xl leading-none disabled:opacity-30"
-                    >
-                    −
+                  type="button"
+                  onClick={() =>
+                    setQuantity((q) => Math.max(1, q - 1))
+                  }
+                  disabled={quantity === 1}
+                  aria-label="Decrease quantity"
+                  className="text-2xl leading-none disabled:opacity-30"
+                >
+                  −
                 </button>
 
                 <span className="text-center font-medium">
@@ -231,13 +232,13 @@ export default function SingleProductHero({
                   type="button"
                   onClick={() => setQuantity((q) => q + 1)}
                   aria-label="Increase quantity"
-                  className="text-2xl leading-none disabled:opacity-30"
+                  className="text-2xl leading-none"
                 >
                   +
                 </button>
               </div>
 
-              {/* Add to Cart — fills remaining width */}
+              {/* Add to Cart */}
               <button
                 type="button"
                 onClick={handleAddToCart}
@@ -261,7 +262,7 @@ export default function SingleProductHero({
             )}
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

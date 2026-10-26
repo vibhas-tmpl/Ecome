@@ -4,8 +4,12 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import ReduxProvider from "./Provider";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 const satoshi = localFont({
   src: [
@@ -51,10 +55,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(satoshi.variable, headingFont.variable, "font-sans", geist.variable)}
+      className={cn(
+        satoshi.variable,
+        headingFont.variable,
+        "font-sans",
+        geist.variable
+      )}
     >
       <body className="min-h-screen flex flex-col">
-        {children}
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

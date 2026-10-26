@@ -14,7 +14,7 @@ export default function BreadCrumb({
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
-    <div className="global-container border-t border-black/10 ">
+    <div className=" border-t border-black/10 ">
       <nav aria-label="Breadcrumb" className="my-8 ">
         <ol className="flex flex-wrap items-center gap-2 text-md font-satoshi  text-black/60">
           <li>

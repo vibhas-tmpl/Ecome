@@ -41,7 +41,7 @@ export default function NewsletterBanner() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
-                className="w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-gray-500"
+                className="w-full min-w-0 bg-transparent text-sm outline-none focus:outline-none focus:ring-0 focus:border-none placeholder:text-gray-500"
               />
             </div>
 

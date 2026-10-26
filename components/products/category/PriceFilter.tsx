@@ -6,7 +6,12 @@ import { useRouter } from "next/navigation";
 import { Check, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 
-const categories = ["T-shirts", "Shorts", "Shirts", "Hoodie", "Jeans"];
+const categories = [
+  { name: "Electronics", slug: "electronics" },
+  { name: "Jewelery", slug: "jewelery" },
+  { name: "Men's Clothing", slug: "mens-clothing" },
+  { name: "Women's Clothing", slug: "womens-clothing" },
+];
 
 const colors = [
   "#00C12B",
@@ -32,8 +37,6 @@ const sizes = [
   "3X-Large",
   "4X-Large",
 ];
-
-const styles = ["Casual", "Formal", "Party", "Gym"];
 
 function FilterSection({
   title,
@@ -98,23 +101,23 @@ export default function PriceFilter() {
   return (
     <aside className="rounded-2xl border border-black/10 p-5">
       {/* Filters heading */}
-        <div className="mb-5 border-b border-black/10 pb-5">
+      <div className="mb-5 border-b border-black/10 pb-5">
         <button
-            type="button"
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex w-full items-center justify-between"
-            aria-expanded={isFilterOpen}
+          type="button"
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className="flex w-full items-center justify-between"
+          aria-expanded={isFilterOpen}
         >
-            <h2 className="text-xl font-bold">Filters</h2>
+          <h2 className="text-xl font-bold">Filters</h2>
 
-            <SlidersHorizontal
+          <SlidersHorizontal
             size={24}
             className={`transition-transform duration-300 ease-in-out ${
-                isFilterOpen ? "rotate-90" : "rotate-0"
+              isFilterOpen ? "rotate-90" : "rotate-0"
             }`}
-            />
+          />
         </button>
-        </div>
+      </div>
 
       {isFilterOpen && (
         <>
@@ -122,17 +125,13 @@ export default function PriceFilter() {
           <div className="mb-6 border-b border-black/10 pb-6">
             <ul className="flex flex-col gap-4">
               {categories.map((category) => (
-                <li key={category}>
+                <li key={category.slug}>
                   <button
                     type="button"
-                    onClick={() =>
-                      router.push(
-                        `/shop/${category.toLowerCase().replaceAll(" ", "-")}`
-                      )
-                    }
+                    onClick={() => router.push(`/shop/${category.slug}`)}
                     className="flex w-full items-center justify-between text-left text-black/60 transition hover:text-black"
                   >
-                    <span>{category}</span>
+                    <span>{category.name}</span>
                     <span className="text-lg">›</span>
                   </button>
                 </li>
@@ -218,28 +217,6 @@ export default function PriceFilter() {
                 );
               })}
             </div>
-          </FilterSection>
-
-          {/* Dress Style */}
-          <FilterSection title="Dress Style" showBorder={false}>
-            <ul className="flex flex-col gap-4">
-              {styles.map((style) => (
-                <li key={style}>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      router.push(
-                        `/shop/${style.toLowerCase().replaceAll(" ", "-")}`
-                      )
-                    }
-                    className="flex w-full items-center justify-between text-left text-black/60 transition hover:text-black"
-                  >
-                    <span>{style}</span>
-                    <span className="text-lg">›</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
           </FilterSection>
 
           {/* Apply Filter */}

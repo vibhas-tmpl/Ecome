@@ -177,10 +177,10 @@ a {
 }
 
 /* 7. Keyboard accessibility */
-:focus-visible {
+/* :focus-visible {
   outline: 2px solid #2563eb;
   outline-offset: 3px;
-}
+} */
 
 /* 8. Shared page container */
 .container {
@@ -213,7 +213,7 @@ h6,
 }
 @layer components {
   .global-container {
-    margin-inline: 4px;
+    margin-inline: 16px;
   }
 
   @media (min-width: 768px) {

@@ -12,6 +12,8 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/lib/store";
 
 type Category = {
   id: number;
@@ -19,17 +21,20 @@ type Category = {
   slug: string;
 };
 
-// Dummy backend data
 const categories: Category[] = [
-  { id: 1, name: "Casual", slug: "casual" },
-  { id: 2, name: "Formal", slug: "formal" },
-  { id: 3, name: "Party", slug: "party" },
-  { id: 4, name: "Gym", slug: "gym" },
+  { id: 1, name: "Electronics", slug: "electronics" },
+  { id: 2, name: "Jewelery", slug: "jewelery" },
+  { id: 3, name: "Men's Clothing", slug: "mens-clothing" },
+  { id: 4, name: "Women's Clothing", slug: "womens-clothing" },
 ];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false);
+
+  const totalItems = useSelector((state: RootState) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+  );
 
   return (
     <header className="w-full bg-white">
@@ -85,7 +90,7 @@ export default function Navbar() {
               {isShopOpen && (
                 <div className="absolute left-0 top-full z-50 w-44 rounded-xl bg-white py-2 shadow-lg">
                   <Link
-                    href="/shop"
+                    href="/#new-arrivals"
                     onClick={() => setIsShopOpen(false)}
                     className="block px-4 py-3 text-sm font-medium hover:bg-gray-100"
                   >
@@ -106,9 +111,15 @@ export default function Navbar() {
               )}
             </li>
 
-            <li><Link href="/sale">On Sale</Link></li>
-            <li><Link href="/new-arrivals">New Arrivals</Link></li>
-            <li><Link href="/brands">Brands</Link></li>
+            <li>
+              <Link href="/sale">On Sale</Link>
+            </li>
+            <li>
+              <Link href="/new-arrivals">New Arrivals</Link>
+            </li>
+            <li>
+              <Link href="/brands">Brands</Link>
+            </li>
           </ul>
         </nav>
 
@@ -125,9 +136,20 @@ export default function Navbar() {
 
         {/* Cart + Account */}
         <div className="mr-[10px] flex shrink-0 items-center gap-3 sm:gap-4 md:mr-0">
-          <Link href="/cart" aria-label="Shopping cart">
+          <Link
+            href="/cart"
+            aria-label={`Shopping cart, ${totalItems} items`}
+            className="relative"
+          >
             <ShoppingCart size={23} />
+
+            {totalItems > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-xs font-medium text-white">
+                {totalItems}
+              </span>
+            )}
           </Link>
+
           <Link href="/login" aria-label="User account">
             <UserRound size={23} />
           </Link>
@@ -167,11 +189,16 @@ export default function Navbar() {
                 On Sale
               </Link>
             </li>
+
             <li>
-              <Link href="/new-arrivals" onClick={() => setIsMenuOpen(false)}>
+              <Link
+                href="/new-arrivals"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 New Arrivals
               </Link>
             </li>
+
             <li>
               <Link href="/brands" onClick={() => setIsMenuOpen(false)}>
                 Brands

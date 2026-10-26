@@ -1,7 +1,9 @@
 
 import { Suspense } from "react";
 
-import { products } from "@/data/products";
+import { fetchProducts } from "@/lib/api";
+import type { TypeProduct } from "@/types/TypeProduct";
+
 import AnouncmentBar from "@/components/layout/AnouncmentBar";
 import Navbar from "@/components/layout/Navbar";
 import Breadcrumb from "@/components/products/category/Breadcrumb";
@@ -19,6 +21,9 @@ type Props = {
   }>;
 };
 
+const categoryToSlug = (category: string) =>
+  category.replace(/'/g, "").replace(/\s+/g, "-");
+
 export default function CategoryPage({ params, searchParams }: Props) {
   return (
     <Suspense fallback={<p className="p-10">Loading category...</p>}>
@@ -31,9 +36,25 @@ async function CategoryContent({ params, searchParams }: Props) {
   const { slug } = await params;
   const { page } = await searchParams;
 
-  const categoryProducts = products.filter(
-    (product) => product.category === slug
-  );
+  const allProducts: TypeProduct[] = await fetchProducts();
+
+  const selectedCategory = allProducts.find(
+    (product) => categoryToSlug(product.category) === slug
+  )?.category;
+
+  const categoryProducts =
+    slug === "all"
+      ? allProducts
+      : selectedCategory
+        ? allProducts.filter(
+            (product) => product.category === selectedCategory
+          ) 
+        : [];
+
+  const categoryTitle =
+    slug === "all"
+      ? "All Products"
+      : selectedCategory ?? slug.replaceAll("-", " ");
 
   const productsPerPage = 9;
   const totalPages = Math.ceil(categoryProducts.length / productsPerPage);
@@ -62,7 +83,7 @@ async function CategoryContent({ params, searchParams }: Props) {
             { name: "Home", href: "/" },
             { name: "Shop", href: "/shop" },
             {
-              name: slug.replaceAll("-", " "),
+              name: categoryTitle,
               href: `/shop/${slug}`,
             },
           ]}
@@ -77,7 +98,7 @@ async function CategoryContent({ params, searchParams }: Props) {
           {/* Products */}
           <section id="products" className="md:col-span-3">
             <p className="mb-5 text-3xl font-bold capitalize">
-              {slug.replaceAll("-", " ")}
+              {categoryTitle}
             </p>
 
             {/* Three cards per row on large screens */}
@@ -94,10 +115,12 @@ async function CategoryContent({ params, searchParams }: Props) {
             )}
 
             {/* Pagination */}
-            <SlugPagination
-              totalProducts={categoryProducts.length}
-              productsPerPage={productsPerPage}
-            />
+            {categoryProducts.length > 0 && (
+              <SlugPagination
+                totalProducts={categoryProducts.length}
+                productsPerPage={productsPerPage}
+              />
+            )}
           </section>
         </div>
       </div>

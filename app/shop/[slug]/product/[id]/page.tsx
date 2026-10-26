@@ -1,6 +1,7 @@
-import { Suspense } from "react";
 
-import { products } from "@/data/products";
+import { notFound } from "next/navigation";
+
+import { fetchProductById } from "@/lib/api";
 import AnouncmentBar from "@/components/layout/AnouncmentBar";
 import Navbar from "@/components/layout/Navbar";
 import SingleProductHero from "@/components/products/singleproduct/singleProductHero";
@@ -16,45 +17,41 @@ type Props = {
   }>;
 };
 
-export default function ProductPage({ params }: Props) {
-  return (
-    <Suspense fallback={<p className="p-10">Loading product...</p>}>
-      <ProductContent params={params} />
-    </Suspense>
-  );
-}
-
-async function ProductContent({ params }: Props) {
+export default async function ProductPage({ params }: Props) {
   const { slug, id } = await params;
 
-  const product = products.find(
-    (product) => product.id === Number(id)
-  );
+  const productId = Number(id);
 
-  if (!product || product.category !== slug) {
-    return (
-      <main>
-        <AnouncmentBar />
-        <Navbar />
+  if (!Number.isInteger(productId) || productId <= 0) {
+    notFound();
+  }
 
-        <div className="global-container py-20 text-center">
-          <h1 className="text-2xl font-bold">Product not found</h1>
-        </div>
+  const product = await fetchProductById(productId);
 
-        <Footer />
-      </main>
-    );
+  if (!product) {
+    notFound();
   }
 
   return (
     <main>
-        <AnouncmentBar />
-        <Navbar />
-        <BreadCrumb slug={slug}  productName={product.name}/>
-        <SingleProductHero product={product} slug={slug} />
-        <ProductTabs />
-        <YouMightLike />
-        <Footer />
+      <AnouncmentBar />
+      <Navbar />
+
+      <div className="global-container">
+        <BreadCrumb
+          slug={slug}
+          productName={product.title}
+        />
+      </div>
+
+      <SingleProductHero
+        product={product}
+        slug={slug}
+      />
+
+      <ProductTabs />
+      <YouMightLike />
+      <Footer />
     </main>
   );
 }
