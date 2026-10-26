@@ -71,7 +71,6 @@ async function CategoryContent({ params, searchParams }: Props) {
   );
 
   return (
-    <main>
 <MainLayout>
 
       <div className="global-container mb-50 border-t border-black/10">
@@ -122,6 +121,5 @@ async function CategoryContent({ params, searchParams }: Props) {
         </div>
       </div>
 </MainLayout>
-    </main>
   );
 }
