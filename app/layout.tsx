@@ -1,12 +1,9 @@
-
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import ReduxProvider from "./Provider";
-
-
 
 const geist = Geist({
   subsets: ["latin"],
@@ -51,9 +48,7 @@ export const metadata: Metadata = {
     "Discover new arrivals, everyday essentials, and clothing that matches your style.",
 };
 
-export default function RootLayout({
-  children,
-}: LayoutProps<"/">) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
@@ -61,15 +56,11 @@ export default function RootLayout({
         satoshi.variable,
         headingFont.variable,
         "font-sans",
-        geist.variable
+        geist.variable,
       )}
     >
       <body className="min-h-screen flex flex-col">
-        <ReduxProvider>
-           
-                {children}
-                
-                 </ReduxProvider>
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

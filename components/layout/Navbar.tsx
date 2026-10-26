@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -33,7 +32,7 @@ export default function Navbar() {
   const [isShopOpen, setIsShopOpen] = useState(false);
 
   const totalItems = useSelector((state: RootState) =>
-    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+    state.cart.items.reduce((total, item) => total + item.quantity, 0),
   );
 
   return (
@@ -191,10 +190,7 @@ export default function Navbar() {
             </li>
 
             <li>
-              <Link
-                href="/new-arrivals"
-                onClick={() => setIsMenuOpen(false)}
-              >
+              <Link href="/new-arrivals" onClick={() => setIsMenuOpen(false)}>
                 New Arrivals
               </Link>
             </li>

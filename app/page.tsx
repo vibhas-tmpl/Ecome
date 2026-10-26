@@ -5,17 +5,14 @@ import DressStyle from "@/components/products/DressStyle";
 import CustomerReviewHome from "@/components/products/CustomerReviewHome";
 import MainLayout from "@/components/layout/MainLayout";
 
-
 export default function Home() {
   return (
-    <MainLayout >
-    
+    <MainLayout>
       <Hero />
       <NewArrival />
       <TopSelling />
       <DressStyle />
       <CustomerReviewHome />
-     
     </MainLayout>
   );
 }

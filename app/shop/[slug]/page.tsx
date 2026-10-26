@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 
 import { fetchProducts } from "@/lib/api";
@@ -37,22 +36,20 @@ async function CategoryContent({ params, searchParams }: Props) {
   const allProducts: TypeProduct[] = await fetchProducts();
 
   const selectedCategory = allProducts.find(
-    (product) => categoryToSlug(product.category) === slug
+    (product) => categoryToSlug(product.category) === slug,
   )?.category;
 
   const categoryProducts =
     slug === "all"
       ? allProducts
       : selectedCategory
-        ? allProducts.filter(
-            (product) => product.category === selectedCategory
-          ) 
+        ? allProducts.filter((product) => product.category === selectedCategory)
         : [];
 
   const categoryTitle =
     slug === "all"
       ? "All Products"
-      : selectedCategory ?? slug.replaceAll("-", " ");
+      : (selectedCategory ?? slug.replaceAll("-", " "));
 
   const productsPerPage = 9;
   const totalPages = Math.ceil(categoryProducts.length / productsPerPage);
@@ -60,19 +57,18 @@ async function CategoryContent({ params, searchParams }: Props) {
   const requestedPage = Number(page) || 1;
   const currentPage = Math.min(
     Math.max(requestedPage, 1),
-    Math.max(totalPages, 1)
+    Math.max(totalPages, 1),
   );
 
   const startIndex = (currentPage - 1) * productsPerPage;
 
   const visibleProducts = categoryProducts.slice(
     startIndex,
-    startIndex + productsPerPage
+    startIndex + productsPerPage,
   );
 
   return (
-<MainLayout>
-
+    <MainLayout>
       <div className="global-container mb-50 border-t border-black/10">
         <Breadcrumb
           items={[
@@ -120,6 +116,6 @@ async function CategoryContent({ params, searchParams }: Props) {
           </section>
         </div>
       </div>
-</MainLayout>
+    </MainLayout>
   );
 }

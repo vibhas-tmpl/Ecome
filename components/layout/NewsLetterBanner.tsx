@@ -28,7 +28,7 @@ export default function NewsletterBanner() {
           {/* Newsletter form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <label htmlFor="newsletter-email" className="sr-only">
-              Enter your email 
+              Enter your email
             </label>
 
             <div className="mx-auto flex w-full items-center gap-3 rounded-full bg-white px-4 py-3.5 text-gray-400 sm:ml-auto sm:mr-0 sm:w-[65%]">
@@ -45,8 +45,7 @@ export default function NewsletterBanner() {
               />
             </div>
 
-            <button 
-
+            <button
               type="submit"
               className="mx-auto flex w-full items-center justify-center gap-3 rounded-full bg-white px-4 py-3.5 text-lg text-black hover:bg-gray-400 sm:ml-auto sm:mr-0 sm:w-[65%]"
             >

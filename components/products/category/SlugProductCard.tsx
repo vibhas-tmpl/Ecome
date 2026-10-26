@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -51,9 +50,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           })}
         </div>
 
-        <span className="text-gray-600">
-          {product.rating.rate}/5
-        </span>
+        <span className="text-gray-600">{product.rating.rate}/5</span>
       </div>
 
       {/* Price */}

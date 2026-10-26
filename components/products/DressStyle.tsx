@@ -1,4 +1,3 @@
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,9 +51,7 @@ export default function DressStyle() {
             {categories.map((category, index) => {
               const isNarrow = index % 4 === 0 || index % 4 === 3;
 
-              const span = isNarrow
-                ? "sm:col-span-3"
-                : "sm:col-span-5";
+              const span = isNarrow ? "sm:col-span-3" : "sm:col-span-5";
 
               return (
                 <Link

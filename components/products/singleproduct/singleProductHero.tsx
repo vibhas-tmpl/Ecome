@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -21,15 +20,14 @@ const colors = [
 
 const sizes = ["Small", "Medium", "Large", "X-Large"] as const;
 
-export default function SingleProductHero({
-  product,
-}: SingleProductHeroProps) {
+export default function SingleProductHero({ product }: SingleProductHeroProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   const [selectedImage, setSelectedImage] = useState(product.image);
   const [selectedColor, setSelectedColor] = useState(colors[0].name);
-  const [selectedSize, setSelectedSize] =
-    useState<(typeof sizes)[number] | null>(null);
+  const [selectedSize, setSelectedSize] = useState<
+    (typeof sizes)[number] | null
+  >(null);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
 
@@ -47,11 +45,11 @@ export default function SingleProductHero({
         image: product.image,
         size: selectedSize,
         quantity,
-      })
+      }),
     );
 
     setMessage(
-      `${product.title} (${selectedSize}, ${selectedColor}) × ${quantity} added!`
+      `${product.title} (${selectedSize}, ${selectedColor}) × ${quantity} added!`,
     );
   }
 
@@ -83,7 +81,7 @@ export default function SingleProductHero({
                     className="object-contain p-2"
                   />
                 </button>
-              )
+              ),
             )}
           </div>
 
@@ -148,9 +146,7 @@ export default function SingleProductHero({
 
           {/* Color Selection */}
           <div className="border-b border-black/10 pb-5">
-            <p className="mb-4 text-base text-gray-600">
-              Select Color
-            </p>
+            <p className="mb-4 text-base text-gray-600">Select Color</p>
 
             <div className="flex items-center gap-3">
               {colors.map((color) => (
@@ -181,9 +177,7 @@ export default function SingleProductHero({
 
           {/* Size Selection */}
           <div className="border-b border-black/10 pb-5">
-            <p className="mb-4 text-base text-gray-600">
-              Choose Size
-            </p>
+            <p className="mb-4 text-base text-gray-600">Choose Size</p>
 
             <div className="flex flex-wrap gap-2">
               {sizes.map((size) => (
@@ -214,9 +208,7 @@ export default function SingleProductHero({
               <div className="flex h-15 w-[30%] items-center justify-between rounded-full bg-[#F0F0F0] px-4">
                 <button
                   type="button"
-                  onClick={() =>
-                    setQuantity((q) => Math.max(1, q - 1))
-                  }
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity === 1}
                   aria-label="Decrease quantity"
                   className="text-2xl leading-none disabled:opacity-30"
@@ -224,9 +216,7 @@ export default function SingleProductHero({
                   −
                 </button>
 
-                <span className="text-center font-medium">
-                  {quantity}
-                </span>
+                <span className="text-center font-medium">{quantity}</span>
 
                 <button
                   type="button"

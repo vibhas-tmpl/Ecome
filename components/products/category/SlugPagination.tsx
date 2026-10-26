@@ -1,4 +1,3 @@
-
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -19,7 +18,7 @@ export default function SlugPagination({
   const totalPages = Math.ceil(totalProducts / productsPerPage);
   const currentPage = Math.min(
     Math.max(Number(searchParams.get("page")) || 1, 1),
-    Math.max(totalPages, 1)
+    Math.max(totalPages, 1),
   );
 
   if (totalPages <= 1) return null;
@@ -61,7 +60,7 @@ export default function SlugPagination({
             >
               {page}
             </button>
-          )
+          ),
         )}
       </div>
 

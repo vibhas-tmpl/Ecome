@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, type ReactNode } from "react";
@@ -51,9 +50,7 @@ function FilterSection({
 
   return (
     <div
-      className={`mb-6 pb-6 ${
-        showBorder ? "border-b border-black/10" : ""
-      }`}
+      className={`mb-6 pb-6 ${showBorder ? "border-b border-black/10" : ""}`}
     >
       <button
         type="button"
@@ -86,7 +83,7 @@ export default function PriceFilter() {
     setSelectedColors((current) =>
       current.includes(color)
         ? current.filter((item) => item !== color)
-        : [...current, color]
+        : [...current, color],
     );
   }
 
@@ -94,7 +91,7 @@ export default function PriceFilter() {
     setSelectedSizes((current) =>
       current.includes(size)
         ? current.filter((item) => item !== size)
-        : [...current, size]
+        : [...current, size],
     );
   }
 

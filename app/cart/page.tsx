@@ -1,32 +1,20 @@
-
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "@/lib/store";
-import {
-  removeFromCart,
-  updateQuantity,
-} from "@/lib/cartSlice";
-import {
-  ArrowRight,
-  Minus,
-  Plus,
-  ShoppingBag,
-  Trash2,
-} from "lucide-react";
+import { removeFromCart, updateQuantity } from "@/lib/cartSlice";
+import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
 export default function CartPage() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const cartItems = useSelector(
-    (state: RootState) => state.cart.items
-  );
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   // Discount and delivery stay at zero until your rules are implemented.
@@ -48,9 +36,7 @@ export default function CartPage() {
         <section className="flex flex-col items-center justify-center rounded-3xl border border-black/10 px-5 py-16 text-center">
           <ShoppingBag size={56} strokeWidth={1.5} />
 
-          <h2 className="mt-5 text-2xl font-bold">
-            Your cart is empty
-          </h2>
+          <h2 className="mt-5 text-2xl font-bold">Your cart is empty</h2>
 
           <p className="mt-2 text-gray-500">
             Looks like you havent added anything to your cart yet.
@@ -112,7 +98,7 @@ export default function CartPage() {
                           removeFromCart({
                             id: item.id,
                             size: item.size,
-                          })
+                          }),
                         )
                       }
                       aria-label={`Remove ${item.name} from cart`}
@@ -138,7 +124,7 @@ export default function CartPage() {
                               id: item.id,
                               size: item.size,
                               quantity: item.quantity - 1,
-                            })
+                            }),
                           )
                         }
                         aria-label="Decrease quantity"
@@ -159,7 +145,7 @@ export default function CartPage() {
                               id: item.id,
                               size: item.size,
                               quantity: item.quantity + 1,
-                            })
+                            }),
                           )
                         }
                         aria-label="Increase quantity"
@@ -175,16 +161,12 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <aside className="rounded-3xl border border-black/10 p-5 sm:p-6">
-            <h2 className="text-2xl font-bold">
-              Order Summary
-            </h2>
+            <h2 className="text-2xl font-bold">Order Summary</h2>
 
             <div className="mt-6 space-y-4">
               <div className="flex justify-between gap-4">
                 <span className="text-gray-500">Subtotal</span>
-                <span className="font-semibold">
-                  {formatPrice(subtotal)}
-                </span>
+                <span className="font-semibold">{formatPrice(subtotal)}</span>
               </div>
 
               <div className="flex justify-between gap-4">

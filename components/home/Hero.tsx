@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import GoAround from "@/components/home/GoAround";
 import Image from "next/image";
 
@@ -14,20 +14,20 @@ export default function Hero() {
             </h1>
 
             <p className="text-sm leading-relaxed text-black/60 sm:text-base lg:mr-8">
-              Browse through our diverse range of meticulously crafted
-              garments, designed to bring out your individuality and cater
-              to your sense of style.
+              Browse through our diverse range of meticulously crafted garments,
+              designed to bring out your individuality and cater to your sense
+              of style.
             </p>
 
             <button
-                onClick={() =>
-                    document.getElementById("new-arrivals")?.scrollIntoView({
-                    behavior: "smooth",
-                    })
-                }
-                className="h-14 w-full rounded-full bg-black px-10 text-white sm:w-fit"
-                >
-                Shop Now
+              onClick={() =>
+                document.getElementById("new-arrivals")?.scrollIntoView({
+                  behavior: "smooth",
+                })
+              }
+              className="h-14 w-full rounded-full bg-black px-10 text-white sm:w-fit"
+            >
+              Shop Now
             </button>
 
             {/* Statistics */}

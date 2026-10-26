@@ -50,9 +50,9 @@ export default function Footer() {
   return (
     <footer className="relative min-h-[500px] mt-16 bg-search-background">
       {/* Newsletter banner: overlaps the top of the footer */}
-        <div className="relative z-10 -translate-y-1/3 sm:-translate-y-1/2">
+      <div className="relative z-10 -translate-y-1/3 sm:-translate-y-1/2">
         <NewsletterBanner />
-        </div>
+      </div>
 
       {/* Footer content */}
       <div className="global-container mb-10 -mt-16 pb-12 pt-8 sm:-mt-20 sm:pt-10 ">
@@ -120,8 +120,9 @@ export default function Footer() {
                     <Link
                       href={link.href}
                       className="  transition hover:text-black"
-                    >  <p className="text-xm text-black/60"> {link.label}</p>
-                      
+                    >
+                      {" "}
+                      <p className="text-xm text-black/60"> {link.label}</p>
                     </Link>
                   </li>
                 ))}

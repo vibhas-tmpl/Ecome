@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ export default function TopSelling() {
         const data = await fetchProducts();
 
         const topSellingProducts = data.filter(
-          (product) => product.rating.rate > 4.5
+          (product) => product.rating.rate > 4.5,
         );
 
         setProducts(topSellingProducts);
@@ -58,9 +57,7 @@ export default function TopSelling() {
 
         {/* Loading and error states */}
         {loading ? (
-          <p className="py-10 text-center">
-            Loading top-rated products...
-          </p>
+          <p className="py-10 text-center">Loading top-rated products...</p>
         ) : error ? (
           <p className="py-10 text-center text-red-500">{error}</p>
         ) : products.length === 0 ? (

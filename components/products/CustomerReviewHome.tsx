@@ -54,62 +54,65 @@ const reviews: Review[] = [
 ];
 
 export default function HappyCustomers() {
-return (
-  <section className="w-full py-12 sm:py-21">
-    <div className="global-container">
-      {/* Heading */}
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="font-heading text-3xl font-bold sm:text-6xl">
-          OUR HAPPY CUSTOMERS
-        </h2>
-      </div>
-
-      {/* Customer reviews carousel */}
-      <Carousel
-        opts={{
-          align: "start",
-          loop: false,
-        }}
-        className="w-full"
-      >
-        <CarouselContent>
-          {reviews.map((review) => (
-            <CarouselItem key={review.id} className="basis-[85%] sm:basis-1/2 lg:basis-[32%]">
-              <div className="h-64 rounded-2xl border border-gray-200 p-5 shadow-sm">
-                {/* Stars */}
-                <div className="flex items-center gap-4">
-                        <div className="flex text-3xl leading-none tracking-tight text-yellow-500">
-                        {Array.from({ length: 5 }).map((_, index) => (
-                            <span key={index}>★</span>
-                        ))}
-                        </div>
-                </div>
-
-                {/* Customer name */}
-                <div className="my-4 flex items-center gap-2">
-                  <p className="font-bold text-xl">{review.name}</p>
-                  <Check
-                    size={16}
-                    className="rounded-full bg-green-500 p-0.5 text-white"
-                  />
-                </div>
-
-                {/* Review text */}
-                <p className="text-lg leading-6 text-gray-600">
-                    “{review.review}”
-                </p>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-
-        {/* Carousel arrows */}
-        <div className="absolute right-0 top-[-55px] flex gap-2">
-          <CarouselPrevious className="static translate-y-0" />
-          <CarouselNext className="static translate-y-0" />
+  return (
+    <section className="w-full py-12 sm:py-21">
+      <div className="global-container">
+        {/* Heading */}
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="font-heading text-3xl font-bold sm:text-6xl">
+            OUR HAPPY CUSTOMERS
+          </h2>
         </div>
-      </Carousel>
-    </div>
-  </section>
-);
+
+        {/* Customer reviews carousel */}
+        <Carousel
+          opts={{
+            align: "start",
+            loop: false,
+          }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {reviews.map((review) => (
+              <CarouselItem
+                key={review.id}
+                className="basis-[85%] sm:basis-1/2 lg:basis-[32%]"
+              >
+                <div className="h-64 rounded-2xl border border-gray-200 p-5 shadow-sm">
+                  {/* Stars */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex text-3xl leading-none tracking-tight text-yellow-500">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <span key={index}>★</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Customer name */}
+                  <div className="my-4 flex items-center gap-2">
+                    <p className="font-bold text-xl">{review.name}</p>
+                    <Check
+                      size={16}
+                      className="rounded-full bg-green-500 p-0.5 text-white"
+                    />
+                  </div>
+
+                  {/* Review text */}
+                  <p className="text-lg leading-6 text-gray-600">
+                    “{review.review}”
+                  </p>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* Carousel arrows */}
+          <div className="absolute right-0 top-[-55px] flex gap-2">
+            <CarouselPrevious className="static translate-y-0" />
+            <CarouselNext className="static translate-y-0" />
+          </div>
+        </Carousel>
+      </div>
+    </section>
+  );
 }

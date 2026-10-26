@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 
 import { fetchProductById } from "@/lib/api";
@@ -31,24 +30,15 @@ export default async function ProductPage({ params }: Props) {
   }
 
   return (
-      <MainLayout >
-
-
+    <MainLayout>
       <div className="global-container">
-        <BreadCrumb
-          slug={slug}
-          productName={product.title}
-        />
+        <BreadCrumb slug={slug} productName={product.title} />
       </div>
 
-      <SingleProductHero
-        product={product}
-        slug={slug}
-      />
+      <SingleProductHero product={product} slug={slug} />
 
       <ProductTabs />
       <YouMightLike />
-
-      </MainLayout>
+    </MainLayout>
   );
 }

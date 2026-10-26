@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 type BreadcrumbProps = {
@@ -16,13 +15,16 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
           const isLast = index === items.length - 1;
 
           return (
-            <li key={`${item.href}-${index}`} className="flex items-center gap-2">
+            <li
+              key={`${item.href}-${index}`}
+              className="flex items-center gap-2"
+            >
               {isLast ? (
                 <p
-                    className="font-satoshi font-medium capitalize text-black"
-                    aria-current="page"
-                    >
-                    {item.name}
+                  className="font-satoshi font-medium capitalize text-black"
+                  aria-current="page"
+                >
+                  {item.name}
                 </p>
               ) : (
                 <Link href={item.href} className="capitalize hover:text-black">
@@ -30,7 +32,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                 </Link>
               )}
 
-             {!isLast && <span>&gt;</span>}
+              {!isLast && <span>&gt;</span>}
             </li>
           );
         })}
