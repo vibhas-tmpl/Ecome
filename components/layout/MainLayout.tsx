@@ -8,6 +8,8 @@ export default function MainLayout({
 }: {
   children: ReactNode;
 }) {
+    console.log('test');
+    
   return (
     <div>
         <AnouncmentBar />
