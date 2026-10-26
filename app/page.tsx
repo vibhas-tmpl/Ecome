@@ -1,4 +1,4 @@
-// import Hero from "@/components/home/Hero";
+import Hero from "@/components/home/Hero";
 import NewArrival from "@/components/products/NewArrival";
 import TopSelling from "@/components/products/TopSelling";
 import DressStyle from "@/components/products/DressStyle";
