@@ -1,4 +1,4 @@
-import Hero from "@/components/home/Hero";
+// import Hero from "@/components/home/Hero";
 import NewArrival from "@/components/products/NewArrival";
 import TopSelling from "@/components/products/TopSelling";
 import DressStyle from "@/components/products/DressStyle";
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <MainLayout >
     
-      <Hero />
+      {/* <Hero /> */}
       <NewArrival />
       <TopSelling />
       <DressStyle />
