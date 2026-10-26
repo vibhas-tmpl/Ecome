@@ -3,7 +3,8 @@ import AnouncmentBar from "@/components/layout/AnouncmentBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-export default function MainLayout({
+export default function 
+MainLayout({
   children,
 }: {
   children: ReactNode;
@@ -14,6 +15,7 @@ export default function MainLayout({
         <AnouncmentBar />
                 <Navbar />
                 {children}
-                 <Footer /></div>
+                 <Footer />
+    </div>
   )
 }

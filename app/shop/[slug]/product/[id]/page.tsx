@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import BreadCrumb from "@/components/products/singleproduct/BreadCrumb";
 import ProductTabs from "@/components/products/singleproduct/ProductTabs";
 import YouMightLike from "@/components/products/singleproduct/YouMightLike";
+import MainLayout from "@/components/layout/MainLayout";
 
 type Props = {
   params: Promise<{
@@ -34,8 +35,8 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <main>
-      <AnouncmentBar />
-      <Navbar />
+      <MainLayout >
+
 
       <div className="global-container">
         <BreadCrumb
@@ -51,7 +52,8 @@ export default async function ProductPage({ params }: Props) {
 
       <ProductTabs />
       <YouMightLike />
-      <Footer />
+
+      </MainLayout>
     </main>
   );
 }
