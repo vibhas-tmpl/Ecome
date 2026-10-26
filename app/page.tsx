@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <MainLayout >
     
-      {/* <Hero /> */}
+      <Hero />
       <NewArrival />
       <TopSelling />
       <DressStyle />
