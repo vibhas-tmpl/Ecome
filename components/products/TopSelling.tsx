@@ -18,7 +18,7 @@ export default function TopSelling() {
         const data = await fetchProducts();
 
         const topSellingProducts = data.filter(
-          (product) => product.rating.rate > 4.5,
+          (product) => product.rating > 4.5,
         );
 
         setProducts(topSellingProducts);
@@ -88,7 +88,7 @@ export default function TopSelling() {
                   {/* Product image */}
                   <div className="relative aspect-square overflow-hidden rounded-3xl bg-gray-100">
                     <Image
-                      src={product.image}
+                      src={product.thumbnail}
                       alt={product.title}
                       fill
                       sizes="(max-width: 639px) 70vw, (max-width: 1023px) 45vw, 25vw"
@@ -105,13 +105,13 @@ export default function TopSelling() {
                   <div className="mt-1 flex items-center gap-2">
                     <div
                       className="flex text-3xl leading-none tracking-tight text-yellow-500"
-                      aria-label={`${product.rating.rate} out of 5 stars`}
+                      aria-label={`${product.rating} out of 5 stars`}
                     >
                       {Array.from({ length: 5 }, (_, index) => (
                         <span key={index}>
-                          {product.rating.rate >= index + 1
+                          {product.rating >= index + 1
                             ? "★"
-                            : product.rating.rate >= index + 0.5
+                            : product.rating >= index + 0.5
                               ? "⯪"
                               : "☆"}
                         </span>
@@ -119,7 +119,7 @@ export default function TopSelling() {
                     </div>
 
                     <span className="text-gray-600">
-                      {product.rating.rate}/5
+                      {product.rating}/5
                     </span>
                   </div>
 

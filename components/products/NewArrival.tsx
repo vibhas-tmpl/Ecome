@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -30,14 +31,7 @@ export default function NewArrival() {
   const visibleProducts = showAll ? products : products.slice(0, 4);
 
   function getCategorySlug(category: string) {
-    const slugs: Record<string, string> = {
-      "men's clothing": "mens-clothing",
-      "women's clothing": "womens-clothing",
-      electronics: "electronics",
-      jewelery: "jewelery",
-    };
-
-    return slugs[category.toLowerCase()] ?? "casual";
+    return category.toLowerCase().replace(/'/g, "").replace(/\s+/g, "-");
   }
 
   return (
@@ -75,7 +69,7 @@ export default function NewArrival() {
                 >
                   <div className="relative aspect-square overflow-hidden rounded-3xl bg-gray-100">
                     <Image
-                      src={product.image}
+                      src={product.thumbnail}
                       alt={product.title}
                       fill
                       sizes="(max-width: 639px) 70vw, (max-width: 1023px) 45vw, 25vw"
@@ -90,13 +84,13 @@ export default function NewArrival() {
                   <div className="mt-1 flex items-center gap-2">
                     <div
                       className="flex text-2xl leading-none tracking-tight text-yellow-500"
-                      aria-label={`${product.rating.rate} out of 5 stars`}
+                      aria-label={`${product.rating} out of 5 stars`}
                     >
                       {Array.from({ length: 5 }, (_, index) => (
                         <span key={index}>
-                          {product.rating.rate >= index + 1
+                          {product.rating >= index + 1
                             ? "★"
-                            : product.rating.rate >= index + 0.5
+                            : product.rating >= index + 0.5
                               ? "⯪"
                               : "☆"}
                         </span>
@@ -104,7 +98,7 @@ export default function NewArrival() {
                     </div>
 
                     <span className="text-gray-600">
-                      {product.rating.rate}/5
+                      {product.rating}/5
                     </span>
                   </div>
 

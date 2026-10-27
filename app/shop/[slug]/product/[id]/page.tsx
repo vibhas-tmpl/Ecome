@@ -1,3 +1,4 @@
+
 import { notFound } from "next/navigation";
 
 import { fetchProductById } from "@/lib/api";
@@ -23,7 +24,14 @@ export default async function ProductPage({ params }: Props) {
     notFound();
   }
 
-  const product = await fetchProductById(productId);
+  let product;
+
+  try {
+    product = await fetchProductById(productId);
+  } catch (error) {
+    console.error("Failed to load product:", productId, error);
+    notFound();
+  }
 
   if (!product) {
     notFound();

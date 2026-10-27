@@ -21,10 +21,12 @@ type Category = {
 };
 
 const categories: Category[] = [
-  { id: 1, name: "Electronics", slug: "electronics" },
-  { id: 2, name: "Jewelery", slug: "jewelery" },
-  { id: 3, name: "Men's Clothing", slug: "mens-clothing" },
-  { id: 4, name: "Women's Clothing", slug: "womens-clothing" },
+  { id: 1, name: "Smartphones", slug: "smartphones" },
+  { id: 2, name: "Laptops", slug: "laptops" },
+  { id: 3, name: "Men's Shirts", slug: "mens-shirts" },
+  { id: 4, name: "Men's Shoes", slug: "mens-shoes" },
+  { id: 5, name: "Women's Dresses", slug: "womens-dresses" },
+  { id: 6, name: "Women's Shoes", slug: "womens-shoes" },
 ];
 
 export default function Navbar() {

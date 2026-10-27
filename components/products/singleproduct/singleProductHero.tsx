@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -20,10 +21,17 @@ const colors = [
 
 const sizes = ["Small", "Medium", "Large", "X-Large"] as const;
 
-export default function SingleProductHero({ product }: SingleProductHeroProps) {
+export default function SingleProductHero({
+  product,
+}: SingleProductHeroProps) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [selectedImage, setSelectedImage] = useState(product.image);
+  const productImages =
+    product.images?.length > 0
+      ? product.images
+      : [product.thumbnail];
+
+  const [selectedImage, setSelectedImage] = useState(productImages[0]);
   const [selectedColor, setSelectedColor] = useState(colors[0].name);
   const [selectedSize, setSelectedSize] = useState<
     (typeof sizes)[number] | null
@@ -42,7 +50,7 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
         id: product.id,
         name: product.title,
         price: product.price,
-        image: product.image,
+        image: product.thumbnail,
         size: selectedSize,
         quantity,
       }),
@@ -59,30 +67,28 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
         {/* Product Gallery */}
         <div className="grid grid-cols-[minmax(0,1fr)] items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
           {/* Thumbnails */}
-          <div className="order-2 flex gap-3 sm:order-1 sm:flex-col">
-            {[product.image, product.image, product.image].map(
-              (image, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setSelectedImage(image)}
-                  className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-2xl border-2 bg-[#F0EEED] sm:w-full ${
-                    selectedImage === image && index === 0
-                      ? "border-black"
-                      : "border-transparent"
-                  }`}
-                  aria-label={`View image ${index + 1}`}
-                >
-                  <Image
-                    src={image}
-                    alt={`${product.title} thumbnail ${index + 1}`}
-                    fill
-                    sizes="163px"
-                    className="object-contain p-2"
-                  />
-                </button>
-              ),
-            )}
+          <div className="order-2 flex gap-3 overflow-x-auto sm:order-1 sm:flex-col">
+            {productImages.map((image, index) => (
+              <button
+                key={image}
+                type="button"
+                onClick={() => setSelectedImage(image)}
+                className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-2xl border-2 bg-[#F0EEED] sm:w-full ${
+                  selectedImage === image
+                    ? "border-black"
+                    : "border-transparent"
+                }`}
+                aria-label={`View image ${index + 1}`}
+              >
+                <Image
+                  src={image}
+                  alt={`${product.title} thumbnail ${index + 1}`}
+                  fill
+                  sizes="163px"
+                  className="object-contain p-2"
+                />
+              </button>
+            ))}
           </div>
 
           {/* Main Image */}
@@ -108,13 +114,13 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
           <div className="flex items-center gap-2">
             <div
               className="flex text-3xl leading-none tracking-tight text-yellow-500"
-              aria-label={`${product.rating.rate} out of 5 stars`}
+              aria-label={`${product.rating} out of 5 stars`}
             >
               {Array.from({ length: 5 }, (_, index) => {
                 const star =
-                  product.rating.rate >= index + 1
+                  product.rating >= index + 1
                     ? "★"
-                    : product.rating.rate >= index + 0.5
+                    : product.rating >= index + 0.5
                       ? "⯪"
                       : "☆";
 
@@ -123,7 +129,7 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
             </div>
 
             <span className="text-sm text-gray-600">
-              {product.rating.rate}/5 ({product.rating.count} reviews)
+              {product.rating}/5
             </span>
           </div>
 
@@ -142,6 +148,13 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
           {/* Product Category */}
           <p className="text-sm capitalize text-gray-500">
             Category: {product.category}
+          </p>
+
+          {/* Stock */}
+          <p className="text-sm text-gray-500">
+            {product.stock > 0
+              ? `${product.stock} in stock`
+              : "Out of stock"}
           </p>
 
           {/* Color Selection */}
@@ -220,9 +233,12 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
 
                 <button
                   type="button"
-                  onClick={() => setQuantity((q) => q + 1)}
+                  onClick={() =>
+                    setQuantity((q) => Math.min(product.stock, q + 1))
+                  }
+                  disabled={quantity >= product.stock}
                   aria-label="Increase quantity"
-                  className="text-2xl leading-none"
+                  className="text-2xl leading-none disabled:opacity-30"
                 >
                   +
                 </button>
@@ -232,9 +248,10 @@ export default function SingleProductHero({ product }: SingleProductHeroProps) {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="h-15 min-w-0 flex-1 rounded-full bg-black px-4 font-medium text-white transition hover:bg-black/80"
+                disabled={product.stock <= 0 || quantity > product.stock}
+                className="h-15 min-w-0 flex-1 rounded-full bg-black px-4 font-medium text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Add to Cart
+                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
               </button>
             </div>
 

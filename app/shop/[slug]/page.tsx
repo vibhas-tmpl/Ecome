@@ -1,3 +1,4 @@
+
 import { Suspense } from "react";
 
 import { fetchProducts } from "@/lib/api";
@@ -35,21 +36,21 @@ async function CategoryContent({ params, searchParams }: Props) {
 
   const allProducts: TypeProduct[] = await fetchProducts();
 
-  const selectedCategory = allProducts.find(
-    (product) => categoryToSlug(product.category) === slug,
-  )?.category;
-
   const categoryProducts =
-    slug === "all"
+    slug.toLowerCase() === "all"
       ? allProducts
-      : selectedCategory
-        ? allProducts.filter((product) => product.category === selectedCategory)
-        : [];
+      : allProducts.filter(
+          (product) =>
+            categoryToSlug(product.category).toLowerCase() ===
+            slug.toLowerCase(),
+        );
 
   const categoryTitle =
-    slug === "all"
+    slug.toLowerCase() === "all"
       ? "All Products"
-      : (selectedCategory ?? slug.replaceAll("-", " "));
+      : categoryProducts.length > 0
+        ? categoryProducts[0].category
+        : slug.replaceAll("-", " ");
 
   const productsPerPage = 9;
   const totalPages = Math.ceil(categoryProducts.length / productsPerPage);
@@ -93,7 +94,6 @@ async function CategoryContent({ params, searchParams }: Props) {
               {categoryTitle}
             </p>
 
-            {/* Three cards per row on large screens */}
             <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
               {visibleProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />

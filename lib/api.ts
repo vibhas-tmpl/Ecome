@@ -2,6 +2,8 @@
 import { TypeProduct } from "@/types/TypeProduct";
 import type { TypeCart } from "@/types/TypeCart";
 
+const API_URL = "https://dummyjson.com";
+
 async function fetchData<T>(url: string): Promise<T> {
   try {
     const response = await fetch(url);
@@ -23,22 +25,20 @@ async function fetchData<T>(url: string): Promise<T> {
   }
 }
 
-export function fetchProducts(): Promise<TypeProduct[]> {
-  return fetchData<TypeProduct[]>(
-    "https://fakestoreapi.com/products"
+export async function fetchProducts(): Promise<TypeProduct[]> {
+  const data = await fetchData<{ products: TypeProduct[] }>(
+    `${API_URL}/products?limit=0`
   );
+
+  return data.products;
 }
 
 export function fetchProductById(
   id: number
 ): Promise<TypeProduct> {
-  return fetchData<TypeProduct>(
-    `https://fakestoreapi.com/products/${id}`
-  );
+  return fetchData<TypeProduct>(`${API_URL}/products/${id}`);
 }
 
 export function fetchCarts(): Promise<TypeCart[]> {
-  return fetchData<TypeCart[]>(
-    "https://fakestoreapi.com/carts"
-  );
+  return fetchData<TypeCart[]>(`${API_URL}/carts`);
 }
