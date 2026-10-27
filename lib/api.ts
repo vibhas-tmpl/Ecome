@@ -1,34 +1,44 @@
+
 import { TypeProduct } from "@/types/TypeProduct";
 import type { TypeCart } from "@/types/TypeCart";
 
-export async function fetchProducts(): Promise<TypeProduct[]> {
-  const response = await fetch("https://fakestoreapi.com/products");
+async function fetchData<T>(url: string): Promise<T> {
+  try {
+    const response = await fetch(url);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
+    if (!response.ok) {
+      console.error("API response error:", {
+        url,
+        status: response.status,
+        statusText: response.statusText,
+      });
+
+      throw new Error(`API request failed: ${response.status}`);
+    }
+
+    return (await response.json()) as T;
+  } catch (error) {
+    console.error("API fetch error:", url, error);
+    throw error;
   }
-
-  const data: TypeProduct[] = await response.json();
-  return data;
 }
 
-export async function fetchProductById(id: number): Promise<TypeProduct> {
-  const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch product");
-  }
-
-  const data: TypeProduct = await response.json();
-  return data;
+export function fetchProducts(): Promise<TypeProduct[]> {
+  return fetchData<TypeProduct[]>(
+    "https://fakestoreapi.com/products"
+  );
 }
 
-export async function fetchCarts(): Promise<TypeCart[]> {
-  const response = await fetch("https://fakestoreapi.com/carts");
+export function fetchProductById(
+  id: number
+): Promise<TypeProduct> {
+  return fetchData<TypeProduct>(
+    `https://fakestoreapi.com/products/${id}`
+  );
+}
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch carts");
-  }
-
-  return response.json();
+export function fetchCarts(): Promise<TypeCart[]> {
+  return fetchData<TypeCart[]>(
+    "https://fakestoreapi.com/carts"
+  );
 }
