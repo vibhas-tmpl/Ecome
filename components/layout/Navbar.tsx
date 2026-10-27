@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -9,10 +10,14 @@ import {
   UserRound,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/store";
+import { supabase } from "@/lib/supabase";
+import type { User } from "@supabase/supabase-js";
 
 type Category = {
   id: number;
@@ -32,10 +37,66 @@ const categories: Category[] = [
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const router = useRouter();
 
   const totalItems = useSelector((state: RootState) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0),
   );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function getInitialUser() {
+      const { data, error } = await supabase.auth.getUser();
+
+      if (!isMounted) return;
+
+      if (error) {
+        setUser(null);
+        return;
+      }
+
+      setUser(data.user);
+    }
+
+    getInitialUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  async function handleLogout() {
+    setIsLoggingOut(true);
+
+    const { error } = await supabase.auth.signOut();
+
+    setIsLoggingOut(false);
+
+    if (error) {
+      console.error("Logout failed:", error.message);
+      return;
+    }
+
+    setUser(null);
+    setIsMenuOpen(false);
+    router.push("/");
+    router.refresh();
+  }
+
+  function closeMobileMenu() {
+    setIsMenuOpen(false);
+  }
 
   return (
     <header className="w-full bg-white">
@@ -124,6 +185,7 @@ export default function Navbar() {
           </ul>
         </nav>
 
+
         {/* Desktop search */}
         <div className="hidden min-w-0 flex-1 items-center gap-3 rounded-full bg-[#F0F0F0] px-4 py-3 md:mx-2 md:flex lg:mx-4">
           <Search size={22} className="shrink-0 text-gray-500" />
@@ -151,9 +213,46 @@ export default function Navbar() {
             )}
           </Link>
 
-          <Link href="/login" aria-label="User account">
-            <UserRound size={23} />
-          </Link>
+          {user ? (
+            <div className="group relative">
+              <button
+                type="button"
+                aria-label="Account options"
+                className="flex items-center gap-1"
+              >
+                <UserRound size={23} />
+                <ChevronDown size={14} className="hidden sm:block" />
+              </button>
+
+              <div className="invisible absolute right-0 top-full z-50 w-52 rounded-xl bg-white py-2 opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <p className="truncate px-4 py-3 text-xs text-gray-500">
+                  {user.email}
+                </p>
+
+                {/* My Account link */}
+                <Link
+                  href="/account"
+                  className="block px-4 py-3 text-sm hover:bg-gray-100"
+                >
+                  My Account
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="flex w-full items-center gap-2 px-4 py-3 text-left text-sm hover:bg-gray-100 disabled:opacity-60"
+                >
+                  <LogOut size={16} />
+                  {isLoggingOut ? "Logging out..." : "Log Out"}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link href="/login" aria-label="Log in to your account">
+              <UserRound size={23} />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -164,7 +263,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/shop"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="font-medium"
               >
                 Shop — All Products
@@ -175,7 +274,7 @@ export default function Navbar() {
                   <li key={category.id}>
                     <Link
                       href={`/shop/${category.slug}`}
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={closeMobileMenu}
                       className="text-sm text-gray-600 hover:text-black"
                     >
                       {category.name}
@@ -186,21 +285,59 @@ export default function Navbar() {
             </li>
 
             <li>
-              <Link href="/sale" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/sale" onClick={closeMobileMenu}>
                 On Sale
               </Link>
             </li>
 
             <li>
-              <Link href="/new-arrivals" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/new-arrivals" onClick={closeMobileMenu}>
                 New Arrivals
               </Link>
             </li>
 
             <li>
-              <Link href="/brands" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/brands" onClick={closeMobileMenu}>
                 Brands
               </Link>
+            </li>
+
+            <li className="border-t border-gray-200 pt-4">
+              {user ? (
+                <div className="space-y-4">
+                  <p className="break-all text-sm text-gray-500">
+                    Signed in as {user.email}
+                  </p>
+
+                  {/* My Account link */}
+                  <Link
+                    href="/account"
+                    onClick={closeMobileMenu}
+                    className="block font-medium"
+                  >
+                    My Account
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="flex items-center gap-2 font-medium disabled:opacity-60"
+                  >
+                    <LogOut size={18} />
+                    {isLoggingOut ? "Logging out..." : "Log Out"}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-5">
+                  <Link href="/login" onClick={closeMobileMenu}>
+                    Log In
+                  </Link>
+                  <Link href="/register" onClick={closeMobileMenu}>
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </li>
           </ul>
 

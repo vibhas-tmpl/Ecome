@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useState } from "react";
 import { X } from "lucide-react";
 
@@ -14,12 +14,12 @@ export default function AnouncmentBar() {
         <div className="flex flex-nowrap items-center justify-center gap-x-1 whitespace-nowrap font-sans text-[10px] leading-tight font-light sm:text-sm">
           <p>Sign up and get 20% off to your first order.</p>
 
-          <a
-            href="/signup"
-            className="shrink-0 font-medium underline underline-offset-2"
-          >
-            Sign Up Now
-          </a>
+        <Link
+          href="/register"
+          className="shrink-0 font-medium underline underline-offset-2"
+        >
+          Sign Up Now
+        </Link>
         </div>
 
         <button
